@@ -3,25 +3,131 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>pretext-react</title>
+  <title>@shipitandpray/pretext-react</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body { margin: 0; font-family: Inter, sans-serif; background: linear-gradient(180deg, #f5f3ff, #eef2ff); color: #111827; }
-    main { max-width: 900px; margin: 0 auto; padding: 56px 24px; }
-    .card { background: rgba(255,255,255,.85); border: 1px solid rgba(255,255,255,.7); border-radius: 24px; padding: 28px; }
-    h1 { font-size: 3rem; margin: 0 0 12px; }
-    p { line-height: 1.6; color: #4b5563; }
-    code { background: #ede9fe; padding: 2px 6px; border-radius: 6px; }
-    a { color: #5b21b6; font-weight: 700; text-decoration: none; }
+    :root {
+      color-scheme: dark;
+      --bg: #07111f;
+      --panel: rgba(13, 25, 44, 0.88);
+      --border: rgba(148, 163, 184, 0.2);
+      --text: #e5eefc;
+      --muted: #94a3b8;
+      --accent: #67e8f9;
+      --accent-2: #a78bfa;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top, rgba(103, 232, 249, 0.16), transparent 30%),
+        radial-gradient(circle at right, rgba(167, 139, 250, 0.18), transparent 24%),
+        linear-gradient(180deg, #06101d 0%, #0a1424 100%);
+    }
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 48px 20px 72px;
+    }
+    .hero {
+      margin-bottom: 28px;
+    }
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    h1 {
+      font-size: clamp(2.4rem, 5vw, 4.5rem);
+      line-height: 0.95;
+      margin: 0 0 14px;
+    }
+    h2 {
+      margin: 0 0 16px;
+      font-size: 1.25rem;
+    }
+    .lede {
+      max-width: 700px;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin: 0 0 16px;
+    }
+    .pill-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.7);
+      color: #dbeafe;
+      font-size: 13px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 18px;
+    }
+    .card {
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: var(--panel);
+      backdrop-filter: blur(18px);
+      min-height: 260px;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+    }
+    .card-wide {
+      grid-column: 1 / -1;
+    }
+    .bubble-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-height: 160px;
+      justify-content: center;
+    }
+    .list-shell {
+      padding: 14px;
+      border-radius: 20px;
+      background: rgba(2, 8, 23, 0.45);
+      border: 1px solid rgba(148, 163, 184, 0.14);
+    }
+    .row-card {
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(30, 41, 59, 0.72);
+      color: #e2e8f0;
+      border: 1px solid rgba(148, 163, 184, 0.14);
+    }
+    @media (max-width: 720px) {
+      .page { padding-inline: 14px; }
+      .card { min-height: auto; }
+    }
   </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@19.2.0",
+        "react/jsx-runtime": "https://esm.sh/react@19.2.0/jsx-runtime",
+        "react-dom/client": "https://esm.sh/react-dom@19.2.0/client",
+        "@chenglou/pretext": "https://esm.sh/@chenglou/pretext@0.0.3"
+      }
+    }
+  </script>
 </head>
 <body>
-  <main>
-    <div class="card">
-      <h1>@shipitandpray/pretext-react</h1>
-      <p>React hooks and components for <code>@chenglou/pretext</code>, built from the Claude to Codex handoff spec.</p>
-      <p>Current status: foundation implemented, typechecked, built, and tested locally.</p>
-      <p><a href="./README.md">README</a></p>
-    </div>
-  </main>
+  <div id="app"></div>
+  <script type="module" src="./main.js"></script>
 </body>
 </html>

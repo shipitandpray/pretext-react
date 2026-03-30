@@ -36,15 +36,11 @@ export function useVirtualScroll<T>({
 } {
   const ready = useFontReady(font);
 
-  return useMemo(() => {
+  // Heights and offsets only depend on items/font/width -- NOT scrollTop.
+  // This avoids re-measuring every item on every scroll event.
+  const { heights, offsets, totalHeight } = useMemo(() => {
     if (!ready || containerWidth <= 0 || lineHeight <= 0) {
-      return {
-        ready,
-        heights: [],
-        offsets: [],
-        totalHeight: 0,
-        range: { start: 0, end: 0, offsetTop: 0 }
-      };
+      return { heights: [] as number[], offsets: [] as number[], totalHeight: 0 };
     }
 
     const heights = items.map((item) => {
@@ -59,6 +55,15 @@ export function useVirtualScroll<T>({
       total += height;
     }
 
+    return { heights, offsets, totalHeight: total };
+  }, [containerWidth, font, getText, itemPadding, items, lineHeight, ready]);
+
+  // Visible range depends on scrollTop/viewportHeight but reuses cached heights.
+  const range = useMemo<VirtualRange>(() => {
+    if (offsets.length === 0) {
+      return { start: 0, end: 0, offsetTop: 0 };
+    }
+
     const startIndex = Math.max(0, lowerBound(offsets, Math.max(0, scrollTop)) - overscan);
     const endEdge = scrollTop + viewportHeight;
     let endIndex = Math.min(
@@ -70,26 +75,11 @@ export function useVirtualScroll<T>({
     }
 
     return {
-      ready,
-      heights,
-      offsets,
-      totalHeight: total,
-      range: {
-        start: startIndex,
-        end: endIndex,
-        offsetTop: offsets[startIndex] ?? 0
-      }
+      start: startIndex,
+      end: endIndex,
+      offsetTop: offsets[startIndex] ?? 0
     };
-  }, [
-    containerWidth,
-    font,
-    getText,
-    itemPadding,
-    items,
-    lineHeight,
-    overscan,
-    ready,
-    scrollTop,
-    viewportHeight
-  ]);
+  }, [offsets, items.length, scrollTop, viewportHeight, overscan]);
+
+  return { ready, heights, offsets, totalHeight, range };
 }
